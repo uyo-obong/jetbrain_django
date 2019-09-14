@@ -1,0 +1,73 @@
+{% extends 'blog/base.html' %}
+
+{% block content%}
+<div class="row py-5 px-5 offset-1">
+    <div class="col-xl-12 col-md-6 col-sm-10 mx-auto">
+
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 bg-dark">
+                <div class="media align-items-end profile-header">
+                    <div class="profile mr-3"><img src="{{ user.profile.image.url }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                        <!-- Button trigger modal -->
+                        <a href="#" class="btn btn-dark btn-sm btn-block" data-toggle="modal" data-target="#exampleModal">Edit profile</a>
+                    </div>
+                    <div class="media-body mb-5 text-white">
+                        <h4 class="mt-0 mb-0">{{ user.last_name }}, {{ user.first_name }}</h4>
+                        <p class="small mb-4"> <i class="fa fa-envelope mr-2"></i>{{ user.email }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li  {% if message.tags %} class="alert alert-success {{ message.tags }} " {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="py-4 px-4">
+                <div class="py-4">
+                    <a class="float-right btn btn-primary" href="{% url 'blog-post' %}">New Post</a>
+                    <h5 class="mb-3">Recent posts</h5>
+
+                    <div class=" bg-light rounded shadow-sm">
+                        <table class="table responsive">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Posted</th>
+                                <th scope="col">Update</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for post in posts %}
+                            <tr>
+                                <th scope="row">{{ post.pk }}</th>
+                                <td>{{ post.title }}</td>
+                                <td>{{ post.created_at }}</td>
+                                <td><a class="btn btn-success" href="{% url 'blog-update' post.slug%}">Update</a></td>
+                                <td><a class="btn btn-danger" href="{% url 'blog-delete' post.slug %}">Delete</a></td>
+                            </tr>
+
+                            {% endfor %}
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div><!-- End profile widget -->
+
+        {% include 'user/update_profile.html' %}
+
+    </div>
+</div>
+
+{% endblock %}
